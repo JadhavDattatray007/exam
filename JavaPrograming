@@ -1,1 +1,887 @@
+1. Write a simple Java Program to print factorial of a given number using recursion.
+public class Factorial {
+    public static void main(String[] args) {
+        int number = 5; // Replace with the desired number
+
+        long factorial = calculateFactorial(number);
+        System.out.println("The factorial of " + number + " is: " + factorial);
+    }
+
+    public static long calculateFactorial(int n) {
+        if (n == 0 || n == 1) {
+            return 1;
+        } else {
+            return n * calculateFactorial(n - 1);
+        }
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------
+
+2. Write a Java program to implement student information in a file and perform the operations on it.
+
+import java.io.*;
+import java.util.Scanner;
+
+class Student implements Serializable {
+    private String name;
+    private int rollNumber;
+
+    public Student(String name, int rollNumber) {
+        this.name = name;
+        this.rollNumber = rollNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getRollNumber() {
+        return rollNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Roll Number: " + rollNumber;
+    }
+}
+
+public class StudentManagement {
+    private static final String FILE_PATH = "students.txt";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("Student Management System");
+            System.out.println("1. Add Student");
+            System.out.println("2. Display All Students");
+            System.out.println("3. Search Student");
+            System.out.println("4. Delete Student");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline character
+
+            switch (choice) {
+                case 1:
+                    addStudent();
+                    break;
+                case 2:
+                    displayAllStudents();
+                    break;
+                case 3:
+                    searchStudent();
+                    break;
+                case 4:
+                    deleteStudent();
+                    break;
+                case 5:
+                    System.out.println("Exiting program...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+                    break;
+            }
+
+            System.out.println();
+        } while (choice != 5);
+    }
+
+    private static void addStudent() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter student name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter roll number: ");
+        int rollNumber = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        Student student = new Student(name, rollNumber);
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_PATH, true);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectOutputStream.writeObject(student);
+            System.out.println("Student added successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while adding the student: " + e.getMessage());
+        }
+    }
+
+    private static void displayAllStudents() {
+        try (FileInputStream fileInputStream = new FileInputStream(FILE_PATH);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            System.out.println("Student Information:");
+
+            while (true) {
+                Student student = (Student) objectInputStream.readObject();
+                System.out.println(student);
+            }
+        } catch (EOFException e) {
+            // Reached end of file, no more objects to read
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("An error occurred while displaying students: " + e.getMessage());
+        }
+    }
+
+    private static void searchStudent() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter roll number to search: ");
+        int rollNumber = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        try (FileInputStream fileInputStream = new FileInputStream(FILE_PATH);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            while (true) {
+                Student student = (Student) objectInputStream.readObject();
+                if (student.getRollNumber() == rollNumber) {
+                    System.out.println("Student found:");
+                    System.out.println(student);
+                    return;
+                }
+            }
+        } catch (EOFException e) {
+            // Reached end of file, no student found
+            System.out.println("Student not found.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("An error occurred while searching for the student: " + e.getMessage());
+        }
+    }
+
+    private static void deleteStudent() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter roll number to delete: ");
+        int rollNumber = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        try (FileInputStream fileInputStream = new FileInputStream(FILE_PATH);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+             FileOutputStream fileOutputStream = new FileOutputStream("temp.txt");
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+
+            while (true) {
+                Student student = (Student) objectInputStream.readObject();
+                if (student.getRollNumber() != rollNumber) {
+                    objectOutputStream.writeObject(student);
+                }
+            }
+        } catch (EOFException e) {
+            // Reached end of file, deleted specified student (if found)
+            File originalFile = new File(FILE_PATH);
+            File tempFile = new File("temp.txt");
+            if (tempFile.renameTo(originalFile)) {
+                System.out.println("Student deleted successfully.");
+            } else {
+                System.out.println("An error occurred while deleting the student.");
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("An error occurred while deleting the student: " + e.getMessage());
+        }
+    }
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+
+1.Write a simple Java program to generate 5 random numbers.
+
+import java.util.Random;
+
+public class RandomNumberGenerator {
+    public static void main(String[] args) {
+        int numberOfRandomNumbers = 5;
+        int minRange = 1;
+        int maxRange = 100;
+
+        Random random = new Random();
+
+        System.out.println("Generating " + numberOfRandomNumbers + " random numbers:");
+
+        for (int i = 0; i < numberOfRandomNumbers; i++) {
+            int randomNumber = random.nextInt(maxRange - minRange + 1) + minRange;
+            System.out.println(randomNumber);
+        }
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+2. Write a program to design Registration process form using Applet and AWT components.
+
+import java.applet.Applet;
+import java.awt.*;
+
+public class RegistrationFormApplet extends Applet {
+    private TextField nameField, emailField;
+    private TextArea addressArea;
+    private CheckboxGroup genderGroup;
+    private Checkbox maleCheckbox, femaleCheckbox;
+    private Choice countryChoice;
+    private Button submitButton;
+
+    public void init() {
+        setLayout(new GridLayout(7, 2));
+        setFont(new Font("Arial", Font.PLAIN, 14));
+
+        // Name
+        add(new Label("Name:"));
+        nameField = new TextField(20);
+        add(nameField);
+
+        // Email
+        add(new Label("Email:"));
+        emailField = new TextField(20);
+        add(emailField);
+
+        // Address
+        add(new Label("Address:"));
+        addressArea = new TextArea(5, 20);
+        add(addressArea);
+
+        // Gender
+        add(new Label("Gender:"));
+        genderGroup = new CheckboxGroup();
+        maleCheckbox = new Checkbox("Male", genderGroup, true);
+        femaleCheckbox = new Checkbox("Female", genderGroup, false);
+        add(maleCheckbox);
+        add(femaleCheckbox);
+
+        // Country
+        add(new Label("Country:"));
+        countryChoice = new Choice();
+        countryChoice.add("United States");
+        countryChoice.add("United Kingdom");
+        countryChoice.add("Canada");
+        countryChoice.add("Australia");
+        countryChoice.add("India");
+        add(countryChoice);
+
+        // Submit button
+        submitButton = new Button("Submit");
+        add(submitButton);
+    }
+
+    public void paint(Graphics g) {
+        g.drawString("Fill in the registration form and click Submit.", 10, 180);
+    }
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Write a Java Program to implement stack using Queue interface.
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class StackUsingQueue<T> {
+    private Queue<T> queue1;
+    private Queue<T> queue2;
+
+    public StackUsingQueue() {
+        queue1 = new LinkedList<>();
+        queue2 = new LinkedList<>();
+    }
+
+    public void push(T element) {
+        queue2.add(element);
+
+        while (!queue1.isEmpty()) {
+            queue2.add(queue1.remove());
+        }
+
+        Queue<T> temp = queue1;
+        queue1 = queue2;
+        queue2 = temp;
+    }
+
+    public T pop() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Stack is empty.");
+        }
+
+        return queue1.remove();
+    }
+
+    public T peek() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Stack is empty.");
+        }
+
+        return queue1.peek();
+    }
+
+    public boolean isEmpty() {
+        return queue1.isEmpty();
+    }
+
+    public int size() {
+        return queue1.size();
+    }
+
+    public static void main(String[] args) {
+        StackUsingQueue<Integer> stack = new StackUsingQueue<>();
+
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+
+        System.out.println("Stack size: " + stack.size());
+        System.out.println("Top element: " + stack.peek());
+
+        System.out.println("Pop: " + stack.pop());
+        System.out.println("Pop: " + stack.pop());
+        System.out.println("Pop: " + stack.pop());
+
+        System.out.println("Is stack empty? " + stack.isEmpty());
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------
+
+2 Write a JAVA Servlet Program to implement and demonstrate get () and Post ()  methods (Using HTTP Servlet Class).
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class MyServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("<html><body>");
+        out.println("<h3>GET Method Example</h3>");
+        out.println("<p>Hello, this is a GET request.</p>");
+        out.println("</body></html>");
+        out.close();
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("<html><body>");
+        out.println("<h3>POST Method Example</h3>");
+        out.println("<p>Hello, this is a POST request.</p>");
+        out.println("</body></html>");
+        out.close();
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+
+1 Write a Java Program to Implement stack using Stack class
+
+import java.util.Stack;
+
+public class StackImplementation {
+    public static void main(String[] args) {
+        Stack<Integer> stack = new Stack<>();
+
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+
+        System.out.println("Stack: " + stack);
+
+        int topElement = stack.peek();
+        System.out.println("Top element: " + topElement);
+
+        int poppedElement = stack.pop();
+        System.out.println("Popped element: " + poppedElement);
+
+        System.out.println("Is stack empty? " + stack.isEmpty());
+
+        System.out.println("Stack size: " + stack.size());
+    }
+}
+
+--------------------------------------------------------------------------------------------------------------------------
+
+ 2 Write JSP Program to validate username and password.
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login Validation</title>
+</head>
+<body>
+    <h2>Login Validation</h2>
+
+    <%-- Check if the form has been submitted --%>
+    <%
+    if (request.getMethod().equals("POST")) {
+        // Retrieve the username and password from the request
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Perform validation
+        boolean isValid = validate(username, password);
+
+        if (isValid) {
+            out.println("<p>Login successful!</p>");
+        } else {
+            out.println("<p>Invalid username or password.</p>");
+        }
+    }
+    %>
+
+    <%-- Login Form --%>
+    <form method="post" action="">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+1 Write a java Program to implement thread using runnable interface.
+
+public class MyRunnable implements Runnable {
+    public void run() {
+        // Code to be executed in the thread
+        for (int i = 0; i < 5; i++) {
+            System.out.println("Thread: " + i);
+            try {
+                Thread.sleep(1000); // Pause the thread for 1 second
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        // Create an instance of the runnable class
+        MyRunnable myRunnable = new MyRunnable();
+
+        // Create a new thread and pass the runnable instance
+        Thread thread = new Thread(myRunnable);
+
+        // Start the thread
+        thread.start();
+    }
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+2 Write JSP program to print current date & time.
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Current Date and Time</title>
+</head>
+<body>
+    <h2>Current Date and Time</h2>
+    <p>Current Date and Time: <%= new java.util.Date() %></p>
+</body>
+</html>
+
+
+---------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+
+1 Write a simple Java Program to implement stack using Queue interface		
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class StackUsingQueue<T> {
+    private Queue<T> queue;
+
+    public StackUsingQueue() {
+        queue = new LinkedList<>();
+    }
+
+    public void push(T element) {
+        queue.add(element);
+
+        int size = queue.size();
+        while (size > 1) {
+            queue.add(queue.remove());
+            size--;
+        }
+    }
+
+    public T pop() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Stack is empty.");
+        }
+
+        return queue.remove();
+    }
+
+    public T peek() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Stack is empty.");
+        }
+
+        return queue.peek();
+    }
+
+    public boolean isEmpty() {
+        return queue.isEmpty();
+    }
+
+    public int size() {
+        return queue.size();
+    }
+
+    public static void main(String[] args) {
+        StackUsingQueue<Integer> stack = new StackUsingQueue<>();
+
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+
+        System.out.println("Stack size: " + stack.size());
+        System.out.println("Top element: " + stack.peek());
+
+        System.out.println("Pop: " + stack.pop());
+        System.out.println("Pop: " + stack.pop());
+        System.out.println("Pop: " + stack.pop());
+
+        System.out.println("Is stack empty? " + stack.isEmpty());
+    }
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+2. Write a program to design Registration process form using Applet and AWT components.
+
+import java.awt.*;
+import java.awt.event.*;
+import java.applet.*;
+
+public class RegistrationForm extends Applet implements ActionListener {
+    private Label nameLabel;
+    private TextField nameField;
+    private Label emailLabel;
+    private TextField emailField;
+    private Label passwordLabel;
+    private TextField passwordField;
+    private Button registerButton;
+
+    public void init() {
+        nameLabel = new Label("Name:");
+        nameField = new TextField(20);
+        emailLabel = new Label("Email:");
+        emailField = new TextField(20);
+        passwordLabel = new Label("Password:");
+        passwordField = new TextField(20);
+        passwordField.setEchoChar('*');
+        registerButton = new Button("Register");
+
+        registerButton.addActionListener(this);
+
+        setLayout(new GridLayout(4, 2));
+        add(nameLabel);
+        add(nameField);
+        add(emailLabel);
+        add(emailField);
+        add(passwordLabel);
+        add(passwordField);
+        add(new Label());
+        add(registerButton);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        String name = nameField.getText();
+        String email = emailField.getText();
+        String password = passwordField.getText();
+
+        // Perform registration logic here
+
+        System.out.println("Registration Successful!");
+    }
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+1. Write a JAVA Servlet Program to implement and demonstrate get() and Post methods(Using HTTP Servlet Class).
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class MyServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("<html><body>");
+        out.println("<h3>GET Method Example</h3>");
+        out.println("<p>Hello, this is a GET request.</p>");
+        out.println("</body></html>");
+        out.close();
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("<html><body>");
+        out.println("<h3>POST Method Example</h3>");
+        out.println("<p>Hello, this is a POST request.</p>");
+        out.println("</body></html>");
+        out.close();
+    }
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+2. Write a simple Java program to generate 5 random numbers.
+
+import java.util.Random;
+
+public class RandomNumberGenerator {
+    public static void main(String[] args) {
+        int numberOfRandomNumbers = 5;
+        int minRange = 1;
+        int maxRange = 100;
+
+        Random random = new Random();
+
+        System.out.println("Generating " + numberOfRandomNumbers + " random numbers:");
+
+        for (int i = 0; i < numberOfRandomNumbers; i++) {
+            int randomNumber = random.nextInt(maxRange - minRange + 1) + minRange;
+            System.out.println(randomNumber);
+        }
+    }
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+1. Write a java Program to implement thread using runnable interface
+
+public class MyRunnable implements Runnable {
+    public void run() {
+        // Code to be executed in the thread
+        for (int i = 0; i < 5; i++) {
+            System.out.println("Thread: " + i);
+            try {
+                Thread.sleep(1000); // Pause the thread for 1 second
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        // Create an instance of the runnable class
+        MyRunnable myRunnable = new MyRunnable();
+
+        // Create a new thread and pass the runnable instance
+        Thread thread = new Thread(myRunnable);
+
+        // Start the thread
+        thread.start();
+    }
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+ 2. Write a Java program to implement student information in a file and perform the operations on it .
+
+import java.io.*;
+import java.util.Scanner;
+
+class Student implements Serializable {
+    private String name;
+    private int rollNumber;
+
+    public Student(String name, int rollNumber) {
+        this.name = name;
+        this.rollNumber = rollNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getRollNumber() {
+        return rollNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Roll Number: " + rollNumber;
+    }
+}
+
+public class StudentManagement {
+    private static final String FILE_PATH = "students.txt";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("Student Management System");
+            System.out.println("1. Add Student");
+            System.out.println("2. Display All Students");
+            System.out.println("3. Search Student");
+            System.out.println("4. Delete Student");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline character
+
+            switch (choice) {
+                case 1:
+                    addStudent();
+                    break;
+                case 2:
+                    displayAllStudents();
+                    break;
+                case 3:
+                    searchStudent();
+                    break;
+                case 4:
+                    deleteStudent();
+                    break;
+                case 5:
+                    System.out.println("Exiting program...");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+                    break;
+            }
+
+            System.out.println();
+        } while (choice != 5);
+    }
+
+    private static void addStudent() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter student name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter roll number: ");
+        int rollNumber = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        Student student = new Student(name, rollNumber);
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(FILE_PATH, true);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectOutputStream.writeObject(student);
+            System.out.println("Student added successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while adding the student: " + e.getMessage());
+        }
+    }
+
+    private static void displayAllStudents() {
+        try (FileInputStream fileInputStream = new FileInputStream(FILE_PATH);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            System.out.println("Student Information:");
+
+            while (true) {
+                Student student = (Student) objectInputStream.readObject();
+                System.out.println(student);
+            }
+        } catch (EOFException e) {
+            // Reached end of file, no more objects to read
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("An error occurred while displaying students: " + e.getMessage());
+        }
+    }
+
+    private static void searchStudent() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter roll number to search: ");
+        int rollNumber = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        try (FileInputStream fileInputStream = new FileInputStream(FILE_PATH);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            while (true) {
+                Student student = (Student) objectInputStream.readObject();
+                if (student.getRollNumber() == rollNumber) {
+                    System.out.println("Student found:");
+                    System.out.println(student);
+                    return;
+                }
+            }
+        } catch (EOFException e) {
+            // Reached end of file, no student found
+            System.out.println("Student not found.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("An error occurred while searching for the student: " + e.getMessage());
+        }
+    }
+
+    private static void deleteStudent() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter roll number to delete: ");
+        int rollNumber = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        try (FileInputStream fileInputStream = new FileInputStream(FILE_PATH);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+             FileOutputStream fileOutputStream = new FileOutputStream("temp.txt");
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+
+            while (true) {
+                Student student = (Student) objectInputStream.readObject();
+                if (student.getRollNumber() != rollNumber) {
+                    objectOutputStream.writeObject(student);
+                }
+            }
+        } catch (EOFException e) {
+            // Reached end of file, deleted specified student (if found)
+            File originalFile = new File(FILE_PATH);
+            File tempFile = new File("temp.txt");
+            if (tempFile.renameTo(originalFile)) {
+                System.out.println("Student deleted successfully.");
+            } else {
+                System.out.println("An error occurred while deleting the student.");
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("An error occurred while deleting the student: " + e.getMessage());
+        }
+    }
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
 
