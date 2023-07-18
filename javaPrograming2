@@ -1,0 +1,507 @@
+Q. 1 Write a simple Java Program to print factorial of a given number using recursion.
+class FactorialExample2{  
+ static int factorial(int n){    
+  if (n == 0)    
+    return 1;    
+  else    
+    return(n * factorial(n-1));    
+ }    
+ public static void main(String args[]){  
+  int i,fact=1;  
+  int number=4;//It is the number to calculate factorial    
+  fact = factorial(number);   
+  System.out.println("Factorial of "+number+" is: "+fact);    
+ }  
+}  
+Output:
+Factorial of 4 is: 24
+
+
+
+
+
+
+
+
+
+
+
+
+Q.2) write a java program to implement a student information in a file and perform the operation on it.
+import java.io.*;
+import java.util.Scanner;
+
+class Student implements Serializable {
+    private int id;
+    private String name;
+    private int age;
+
+    public Student(int id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Age: " + age;
+    }
+}
+
+class StudentManagement {
+    private static final String FILE_NAME = "student_data.ser";
+
+    public void addStudent(Student student) {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(FILE_NAME, true));
+            outputStream.writeObject(student);
+            outputStream.close();
+            System.out.println("Student record added successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while adding the student record.");
+            e.printStackTrace();
+        }
+    }
+
+    public void displayAllStudents() {
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FILE_NAME));
+            Object obj;
+            while ((obj = inputStream.readObject()) != null) {
+                if (obj instanceof Student) {
+                    Student student = (Student) obj;
+                    System.out.println(student);
+                }
+            }
+            inputStream.close();
+        } catch (EOFException e) {
+            // End of file reached
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("An error occurred while reading student records.");
+            e.printStackTrace();
+        }
+    }
+
+    public void searchStudent(int id) {
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FILE_NAME));
+            Object obj;
+            boolean found = false;
+            while ((obj = inputStream.readObject()) != null) {
+                if (obj instanceof Student) {
+                    Student student = (Student) obj;
+                    if (student.getId() == id) {
+                        System.out.println("Student found: " + student);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (!found) {
+                System.out.println("Student with ID " + id + " not found.");
+            }
+            inputStream.close();
+        } catch (EOFException e) {
+            // End of file reached
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("An error occurred while searching for the student.");
+            e.printStackTrace();
+        }
+    }
+}
+
+public class StudentManagementSystem {
+    public static void main(String[] args) {
+        StudentManagement studentManagement = new StudentManagement();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Student Management System");
+            System.out.println("1. Add Student");
+            System.out.println("2. Display All Students");
+            System.out.println("3. Search Student by ID");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter student ID: ");
+                    int id = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline character
+                    System.out.print("Enter student name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter student age: ");
+                    int age = scanner.nextInt();
+                    Student student = new Student(id, name, age);
+                    studentManagement.addStudent(student);
+                    break;
+                case 2:
+                    studentManagement.displayAllStudents();
+                    break;
+                case 3:
+                    System.out.print("Enter student ID to search: ");
+                    int searchId = scanner.nextInt();
+                    studentManagement.searchStudent(searchId);
+                    break;
+                case 4:
+                    System.out.println("Exiting the program...");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+Q.3) write a simple java program to generate 5 random numbers
+import java.util.Random;
+
+public class RandomNumberGenerator {
+    public static void main(String[] args) {
+        Random random = new Random();
+
+        System.out.println("Generating 5 random numbers:");
+        for (int i = 0; i < 5; i++) {
+            int randomNumber = random.nextInt();
+            System.out.println(randomNumber);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+Q.4) write a java program to design registration process using APPLET and AWT
+import java.applet.Applet;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class RegistrationApplet extends Applet implements ActionListener {
+    private Label nameLabel, emailLabel, passwordLabel;
+    private TextField nameField, emailField, passwordField;
+    private Button registerButton;
+
+    public void init() {
+        setLayout(new GridLayout(4, 2));
+
+        nameLabel = new Label("Name:");
+        nameField = new TextField(20);
+
+        emailLabel = new Label("Email:");
+        emailField = new TextField(20);
+
+        passwordLabel = new Label("Password:");
+        passwordField = new TextField(20);
+        passwordField.setEchoChar('*');
+
+        registerButton = new Button("Register");
+        registerButton.addActionListener(this);
+
+        add(nameLabel);
+        add(nameField);
+        add(emailLabel);
+        add(emailField);
+        add(passwordLabel);
+        add(passwordField);
+        add(registerButton);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == registerButton) {
+            String name = nameField.getText();
+            String email = emailField.getText();
+            String password = passwordField.getText();
+
+            // You can perform further processing with the entered data, such as storing it in a database
+
+            System.out.println("Registration Successful!");
+            System.out.println("Name: " + name);
+            System.out.println("Email: " + email);
+            System.out.println("Password: " + password);
+
+                }
+    }
+}
+Q.5) write a java program to implement stack using queue interface
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class StackUsingQueue<T> {
+    private Queue<T> queue1;
+    private Queue<T> queue2;
+
+    public StackUsingQueue() {
+        queue1 = new LinkedList<>();
+        queue2 = new LinkedList<>();
+    }
+
+    public void push(T element) {
+        queue2.add(element);
+        while (!queue1.isEmpty()) {
+            queue2.add(queue1.remove());
+        }
+        Queue<T> temp = queue1;
+        queue1 = queue2;
+        queue2 = temp;
+    }
+
+    public T pop() {
+        if (queue1.isEmpty()) {
+            throw new IllegalStateException("Stack is empty.");
+        }
+        return queue1.remove();
+    }
+
+    public T peek() {
+        if (queue1.isEmpty()) {
+            throw new IllegalStateException("Stack is empty.");
+        }
+        return queue1.peek();
+    }
+
+    public boolean isEmpty() {
+        return queue1.isEmpty();
+    }
+
+    public int size() {
+        return queue1.size();
+    }
+
+    public static void main(String[] args) {
+        StackUsingQueue<Integer> stack = new StackUsingQueue<>();
+
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+
+        System.out.println("Size of the stack: " + stack.size());
+        System.out.println("Top element of the stack: " + stack.peek());
+
+        System.out.println("Popping elements from the stack:");
+        while (!stack.isEmpty()) {
+            System.out.println(stack.pop());
+        }
+ System.out.println("Is the stack empty? " + stack.isEmpty());
+     }
+}
+Q.6) write a java servlet program to implement and demonstrate get() and post () methods (using HTTP servlet class)
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class MyServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        out.println("<html><body>");
+        out.println("<h1>GET Method</h1>");
+        out.println("<p>Request URI: " + request.getRequestURI() + "</p>");
+        out.println("<p>Query String: " + request.getQueryString() + "</p>");
+        out.println("</body></html>");
+
+        out.close();
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        out.println("<html><body>");
+        out.println("<h1>POST Method</h1>");
+        out.println("<p>Request URI: " + request.getRequestURI() + "</p>");
+        out.println("<p>Query String: " + request.getQueryString() + "</p>");
+
+        String name = request.getParameter("name");
+        String age = request.getParameter("age");
+        out.println("<p>Name: " + name + "</p>");
+        out.println("<p>Age: " + age + "</p>");
+
+        out.println("</body></html>");
+
+        out.close();
+    }
+}
+
+
+
+
+
+
+
+
+
+Q.7) write a java program to implement stack using stack class
+
+import java.util.Stack;
+
+public class StackImplementation {
+    public static void main(String[] args) {
+        Stack<Integer> stack = new Stack<>();
+
+        // Pushing elements to the stack
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+        stack.push(40);
+        stack.push(50);
+
+        System.out.println("Initial Stack: " + stack);
+
+        // Popping elements from the stack
+        int poppedElement = stack.pop();
+        System.out.println("Popped Element: " + poppedElement);
+        System.out.println("Stack after Pop Operation: " + stack);
+
+        // Peeking the top element of the stack
+        int topElement = stack.peek();
+        System.out.println("Top Element of the Stack: " + topElement);
+
+        // Checking if the stack is empty
+        boolean isEmpty = stack.isEmpty();
+        System.out.println("Is Stack Empty? " + isEmpty);
+       // Size of the stack
+        int size = stack.size();
+        System.out.println("Size of the Stack: " + size);
+    }
+}
+Q.8) write JSP program to validate username and password
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form method="post" action="login.jsp">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <input type="submit" value="Login">
+    </form>
+
+    <%-- Validation Logic --%>
+    <%
+        // Retrieve the submitted username and password
+        String submittedUsername = request.getParameter("username");
+        String submittedPassword = request.getParameter("password");
+
+        // Define the expected username and password
+        String expectedUsername = "admin";
+        String expectedPassword = "password";
+
+        // Perform the validation
+        if (submittedUsername != null && submittedPassword != null) {
+            if (submittedUsername.equals(expectedUsername) && submittedPassword.equals(expectedPassword)) {
+                out.println("<p>Login successful!</p>");
+            } else {
+                out.println("<p>Invalid username or password.</p>");
+            }
+        }
+    %>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+Q.9) write a java program to implement thread using runnable interface
+public class MyThread implements Runnable {
+    public void run() {
+        System.out.println("Thread is running.");
+    }
+
+    public static void main(String[] args) {
+        // Create an instance of the Runnable implementation
+        MyThread myThread = new MyThread();
+
+        // Create a Thread object with the Runnable instance
+        Thread thread = new Thread(myThread);
+
+        // Start the thread
+        thread.start();
+    }
+}
+
+
+
+
+
+
+
+
+
+Q.10) write JSP program to print current date and time
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Current Date and Time</title>
+</head>
+<body>
+    <h1>Current Date and Time</h1>
+    <p>The current date and time is: <%= new java.util.Date() %></p>
+</body>
+</html>
+
+Output:
+Current Date and Time
+The current date and time is: Mon Jan 18 12:34:56 GMT 2021
+
+
+
+
+
+
+
+
+
+
