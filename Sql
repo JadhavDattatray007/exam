@@ -1,0 +1,1132 @@
+1. Implementation of DDL commands of SQL with suitable examples 
+ Create table [20 Marks]
+ Alter table
+ Drop Table
+Create table student(Roll no ,sname,date of birth).Add new column into student 
+relation name address as text data type and column phone of data type integer
+
+------->
+CREATE TABLE student (
+    Roll_no INT,
+    sname VARCHAR(50),
+    date_of_birth DATE
+);
+
+------->
+ALTER TABLE student
+ADD address TEXT,
+    phone INT;
+
+------->
+DROP TABLE IF EXISTS student;
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Write a PL/SQL Program to Find Factorial of a Number
+
+-- PL/SQL program to find the factorial of a number
+
+-- Declare a function to calculate factorial
+CREATE OR REPLACE FUNCTION calculate_factorial(num NUMBER) RETURN NUMBER AS
+    result NUMBER := 1;
+BEGIN
+    IF num = 0 THEN
+        RETURN 1;
+    ELSIF num < 0 THEN
+        RETURN NULL; -- Factorial is not defined for negative numbers
+    ELSE
+        FOR i IN 1..num LOOP
+            result := result * i;
+        END LOOP;
+        RETURN result;
+    END IF;
+END;
+/
+
+-- Anonymous block to call the function and display the result
+SET SERVEROUTPUT ON
+DECLARE
+    num_input NUMBER := 5; -- Replace 5 with the desired number for which you want to find the factorial
+    factorial_result NUMBER;
+BEGIN
+    factorial_result := calculate_factorial(num_input);
+    DBMS_OUTPUT.PUT_LINE('Factorial of ' || num_input || ' is: ' || factorial_result);
+END;
+/
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Implementation of different types of function with suitable examples 
+ By using Number function
+ By using Aggregate Function
+ By using Character Function
+ By using Conversion Function 
+ By using Date Function
+
+------->
+
+-- Creating the table
+CREATE TABLE numbers (
+    num1 NUMBER,
+    num2 NUMBER
+);
+
+-- Inserting sample data
+INSERT INTO numbers VALUES (10, 5);
+
+-- Using Number function (e.g., ROUND)
+SELECT num1, num2, ROUND(num1/num2) AS rounded_result
+FROM numbers;
+
+------->
+
+
+-- Creating the table
+CREATE TABLE employees (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    salary NUMERIC(10, 2)
+);
+
+-- Inserting sample data
+INSERT INTO employees VALUES
+    (1, 'John Doe', 50000),
+    (2, 'Jane Smith', 60000),
+    (3, 'Bob Johnson', 75000);
+
+-- Using Aggregate function (e.g., AVG)
+SELECT AVG(salary) AS average_salary
+FROM employees;
+
+
+-------->
+
+
+-- Creating the table
+CREATE TABLE products (
+    product_id INT,
+    product_name VARCHAR(100)
+);
+
+-- Inserting sample data
+INSERT INTO products VALUES
+    (1, 'Apples'),
+    (2, 'Bananas'),
+    (3, 'Oranges');
+
+-- Using Character function (e.g., SUBSTR)
+SELECT product_name, SUBSTR(product_name, 1, 3) AS shortened_name
+FROM products;
+
+--------->
+
+
+-- Creating the table
+CREATE TABLE students (
+    student_id INT,
+    student_name VARCHAR(50),
+    age INT
+);
+
+-- Inserting sample data
+INSERT INTO students VALUES
+    (1, 'Alice', 20),
+    (2, 'Bob', 22),
+    (3, 'Charlie', 19);
+
+-- Using Conversion function (e.g., TO_CHAR)
+SELECT student_id, student_name, TO_CHAR(age) AS age_str
+FROM students;
+
+-------->
+
+
+-- Creating the table
+CREATE TABLE orders (
+    order_id INT,
+    order_date DATE
+);
+
+-- Inserting sample data
+INSERT INTO orders VALUES
+    (1, SYSDATE),
+    (2, TO_DATE('2023-07-21', 'YYYY-MM-DD')),
+    (3, TO_DATE('2023-07-20', 'YYYY-MM-DD'));
+
+-- Using Date function (e.g., SYSDATE)
+SELECT order_id, order_date
+FROM orders;
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+2. Write a PL/SQL Program to Find Factorial of a Number
+
+-- PL/SQL program to find the factorial of a number
+
+-- Declare a function to calculate factorial
+CREATE OR REPLACE FUNCTION calculate_factorial(num NUMBER) RETURN NUMBER AS
+    result NUMBER := 1;
+BEGIN
+    IF num = 0 THEN
+        RETURN 1;
+    ELSIF num < 0 THEN
+        RETURN NULL; -- Factorial is not defined for negative numbers
+    ELSE
+        FOR i IN 1..num LOOP
+            result := result * i;
+        END LOOP;
+        RETURN result;
+    END IF;
+END;
+/
+
+-- Anonymous block to call the function and display the result
+SET SERVEROUTPUT ON
+DECLARE
+    num_input NUMBER := 5; -- Replace 5 with the desired number for which you want to find the factorial
+    factorial_result NUMBER;
+BEGIN
+    factorial_result := calculate_factorial(num_input);
+    DBMS_OUTPUT.PUT_LINE('Factorial of ' || num_input || ' is: ' || factorial_result);
+END;
+/
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.PL/SQL Program to Print Table of a Number
+
+-- PL/SQL program to print the table of a number
+
+-- Anonymous block to print the table of the number
+SET SERVEROUTPUT ON
+DECLARE
+    num_input NUMBER := 5; -- Replace 5 with the desired number for which you want to print the table
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Table of ' || num_input || ':');
+    FOR i IN 1..10 LOOP
+        DBMS_OUTPUT.PUT_LINE(num_input || ' x ' || i || ' = ' || num_input * i);
+    END LOOP;
+END;
+/
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Implementation of different types of Joins 
+ Inner Join
+ Outer Join
+ Natural Join
+Customer(customer_id,first_name)
+Order(order_id,amount)
+Cust_order(customerid , first_amount,amount)
+
+
+SELECT Customer.customer_id, first_name, order_id, amount
+FROM Customer
+INNER JOIN Cust_order ON Customer.customer_id = Cust_order.customer_id;
+
+
+SELECT Customer.customer_id, first_name, order_id, amount
+FROM Customer
+LEFT JOIN Cust_order ON Customer.customer_id = Cust_order.customer_id;
+
+SELECT Customer.customer_id, first_name, order_id, amount
+FROM Customer
+FULL OUTER JOIN Cust_order ON Customer.customer_id = Cust_order.customer_id;
+
+SELECT customer_id, first_name, order_id, amount
+FROM Customer
+NATURAL JOIN Cust_order;
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Implementation of DDL commands of SQL with suitable examples 
+ Create table [20 Marks]
+ Alter table
+ Drop Table
+Create table student(Roll no ,sname,date of birth).Add new column into student relation 
+name address as text data type and column phone of data type integer
+
+CREATE TABLE student (
+    Roll_no INT,
+    sname VARCHAR(50),
+    date_of_birth DATE
+);
+
+ALTER TABLE student
+ADD address TEXT,
+    phone INT;
+
+DROP TABLE IF EXISTS student;
+
+
+-- Create table
+CREATE TABLE student (
+    Roll_no INT,
+    sname VARCHAR(50),
+    date_of_birth DATE
+);
+
+-- Alter table to add new columns
+ALTER TABLE student
+ADD address TEXT,
+    phone INT;
+
+-- Drop table if it exists
+DROP TABLE IF EXISTS student;
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Write a program to implement SQL Cursors.
+
+-- PL/SQL program to implement SQL Cursors
+
+-- Declare a cursor
+DECLARE
+    CURSOR employee_cursor IS
+        SELECT emp_id, emp_name, salary
+        FROM employees;
+        
+    -- Variables to store cursor data
+    emp_id_val employees.emp_id%TYPE;
+    emp_name_val employees.emp_name%TYPE;
+    salary_val employees.salary%TYPE;
+BEGIN
+    -- Open the cursor
+    OPEN employee_cursor;
+
+    -- Loop through the cursor data and process each row
+    LOOP
+        FETCH employee_cursor INTO emp_id_val, emp_name_val, salary_val;
+        
+        -- Exit the loop if there are no more rows to fetch
+        EXIT WHEN employee_cursor%NOTFOUND;
+        
+        -- Process the data (here we are just printing the data)
+        DBMS_OUTPUT.PUT_LINE('Employee ID: ' || emp_id_val || ', Name: ' || emp_name_val || ', Salary: ' || salary_val);
+    END LOOP;
+
+    -- Close the cursor
+    CLOSE employee_cursor;
+END;
+/
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ 1. Write a program by using PL/SQL.
+
+-- PL/SQL program to calculate the area of a circle
+
+-- Declare variables
+DECLARE
+    radius NUMBER := 5; -- Replace 5 with the desired radius of the circle
+    pi CONSTANT NUMBER := 3.14159;
+    area NUMBER;
+BEGIN
+    -- Calculate the area of the circle
+    area := pi * radius * radius;
+    
+    -- Display the result
+    DBMS_OUTPUT.PUT_LINE('Radius: ' || radius);
+    DBMS_OUTPUT.PUT_LINE('Area of the Circle: ' || area);
+END;
+/
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+. 2. Implementation of different types of function with suitable examples 
+ By using Number function
+ By using Aggregate Function
+ By using Character Function
+ By using Conversion Function 
+ By using Date Function 
+
+
+SELECT ABS(-10) AS absolute_value;
+
+SELECT SUM(salary) AS total_salary
+FROM employees;
+
+SELECT CONCAT('Hello', ' ', 'World') AS concatenated_string;
+
+SELECT TO_NUMBER('100.50') AS converted_number;
+
+SELECT SYSDATE AS current_datetime
+FROM dual;
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+1 Study & Implementation of SQL Triggers.
+
+CREATE TABLE employee_audit (
+    audit_id INT PRIMARY KEY,
+    emp_id INT,
+    emp_name VARCHAR(50),
+    action VARCHAR(10),
+    audit_date DATE
+);
+
+CREATE OR REPLACE TRIGGER employee_audit_trigger
+AFTER INSERT OR UPDATE OR DELETE ON employees
+FOR EACH ROW
+DECLARE
+    action_text VARCHAR(10);
+BEGIN
+    IF INSERTING THEN
+        action_text := 'INSERT';
+    ELSIF UPDATING THEN
+        action_text := 'UPDATE';
+    ELSE
+        action_text := 'DELETE';
+    END IF;
+
+    INSERT INTO employee_audit (audit_id, emp_id, emp_name, action, audit_date)
+    VALUES (audit_seq.NEXTVAL, :NEW.emp_id, :NEW.emp_name, action_text, SYSDATE);
+END;
+/
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+2 . Implementation of different types of Joins 
+ Inner Join
+ Outer Join
+ Natural Join etc. [20 Marks]
+Customer(customer_id,first_name)
+Order(order_id,amount)
+Cust_order(customerid , first_amount,amount)
+
+
+SELECT c.customer_id, c.first_name, o.order_id, o.amount
+FROM Customer c
+INNER JOIN Cust_order co ON c.customer_id = co.customerid
+INNER JOIN Order o ON co.first_amount = o.amount;
+
+
+SELECT c.customer_id, c.first_name, o.order_id, o.amount
+FROM Customer c
+LEFT JOIN Cust_order co ON c.customer_id = co.customerid
+LEFT JOIN Order o ON co.first_amount = o.amount;
+
+
+SELECT c.customer_id, c.first_name, o.order_id, o.amount
+FROM Customer c
+RIGHT JOIN Cust_order co ON c.customer_id = co.customerid
+RIGHT JOIN Order o ON co.first_amount = o.amount;
+
+
+SELECT c.customer_id, c.first_name, o.order_id, o.amount
+FROM Customer c
+FULL JOIN Cust_order co ON c.customer_id = co.customerid
+FULL JOIN Order o ON co.first_amount = o.amount;
+
+
+SELECT customer_id, first_name, order_id, amount
+FROM Customer
+NATURAL JOIN Cust_order
+NATURAL JOIN Order;
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.Study & Implementation of SQL Triggers. 
+
+CREATE TABLE employee_audit (
+    audit_id INT PRIMARY KEY,
+    emp_id INT,
+    emp_name VARCHAR(50),
+    action VARCHAR(10),
+    audit_date DATE
+);
+
+CREATE OR REPLACE TRIGGER employee_audit_trigger
+AFTER INSERT OR UPDATE OR DELETE ON employees
+FOR EACH ROW
+DECLARE
+    action_text VARCHAR(10);
+BEGIN
+    IF INSERTING THEN
+        action_text := 'INSERT';
+    ELSIF UPDATING THEN
+        action_text := 'UPDATE';
+    ELSE
+        action_text := 'DELETE';
+    END IF;
+
+    INSERT INTO employee_audit (audit_id, emp_id, emp_name, action, audit_date)
+    VALUES (audit_seq.NEXTVAL, :NEW.emp_id, :NEW.emp_name, action_text, SYSDATE);
+END;
+/
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Implementation of different types of operators in SQL 
+ By using Arithmetic Operators
+ By using Logical Operators
+ By using Comparison Operator
+ By using Special Operator
+ By using Set Operation
+
+
+-- Adding two numbers
+SELECT 10 + 5 AS addition_result;
+
+-- Subtracting two numbers
+SELECT 20 - 8 AS subtraction_result;
+
+-- Multiplying two numbers
+SELECT 6 * 7 AS multiplication_result;
+
+-- Dividing two numbers
+SELECT 50 / 2 AS division_result;
+
+-- Modulo operation
+SELECT 15 % 4 AS modulo_result;
+
+
+-- Using AND operator
+SELECT *
+FROM employees
+WHERE salary > 50000 AND department = 'IT';
+
+-- Using OR operator
+SELECT *
+FROM employees
+WHERE salary > 70000 OR department = 'HR';
+
+-- Using NOT operator
+SELECT *
+FROM employees
+WHERE NOT department = 'Finance';
+
+
+-- Using equals (=) operator
+SELECT *
+FROM employees
+WHERE department = 'Sales';
+
+-- Using not equals (<>) operator
+SELECT *
+FROM employees
+WHERE department <> 'Finance';
+
+-- Using greater than (>) operator
+SELECT *
+FROM employees
+WHERE salary > 60000;
+
+-- Using less than (<) operator
+SELECT *
+FROM employees
+WHERE salary < 50000;
+
+
+-- Using LIKE operator for pattern matching
+SELECT *
+FROM products
+WHERE product_name LIKE 'App%';
+
+
+-- Using UNION to combine results from two queries
+SELECT emp_id, emp_name FROM employees
+UNION
+SELECT emp_id, emp_name FROM contractors;
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Study & Implementation of PL/SQL
+
+
+
+CREATE OR REPLACE PACKAGE EmployeePackage AS
+    PROCEDURE InsertEmployee(
+        emp_id NUMBER,
+        emp_name VARCHAR2,
+        emp_salary NUMBER
+    );
+
+    FUNCTION CalculateTotalSalary(
+        basic_salary NUMBER,
+        bonus NUMBER
+    ) RETURN NUMBER;
+END;
+/
+
+CREATE OR REPLACE PACKAGE BODY EmployeePackage AS
+    PROCEDURE InsertEmployee(
+        emp_id NUMBER,
+        emp_name VARCHAR2,
+        emp_salary NUMBER
+    ) AS
+    BEGIN
+        INSERT INTO employees (employee_id, employee_name, salary)
+        VALUES (emp_id, emp_name, emp_salary);
+        COMMIT;
+    END;
+
+    FUNCTION CalculateTotalSalary(
+        basic_salary NUMBER,
+        bonus NUMBER
+    ) RETURN NUMBER AS
+        total_salary NUMBER;
+    BEGIN
+        total_salary := basic_salary + bonus;
+        RETURN total_salary;
+    END;
+END;
+/
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Implementation of different types of function with suitable examples 
+ By using Number function
+ By using Aggregate Function
+ By using Character Function
+ By using Conversion Function 
+ By using Date Function 
+
+CREATE OR REPLACE FUNCTION GetAbsoluteValue(num NUMBER) RETURN NUMBER AS
+    result NUMBER;
+BEGIN
+    result := ABS(num);
+    RETURN result;
+END;
+/
+
+
+CREATE OR REPLACE FUNCTION GetTotalSalary RETURN NUMBER AS
+    total_salary NUMBER;
+BEGIN
+    SELECT SUM(salary) INTO total_salary FROM employees;
+    RETURN total_salary;
+END;
+/
+
+
+CREATE OR REPLACE FUNCTION GetUppercaseString(input_str VARCHAR2) RETURN VARCHAR2 AS
+    result_str VARCHAR2(100);
+BEGIN
+    result_str := UPPER(input_str);
+    RETURN result_str;
+END;
+/
+
+
+CREATE OR REPLACE FUNCTION ConvertStringToNumber(input_str VARCHAR2) RETURN NUMBER AS
+    num_val NUMBER;
+BEGIN
+    num_val := TO_NUMBER(input_str);
+    RETURN num_val;
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RETURN NULL; -- Return NULL if conversion fails
+END;
+/
+
+
+CREATE OR REPLACE FUNCTION GetCurrentDateTime RETURN TIMESTAMP AS
+    current_datetime TIMESTAMP;
+BEGIN
+    current_datetime := SYSTIMESTAMP;
+    RETURN current_datetime;
+END;
+/
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ 1. Write a program for implementation of SQL Cursors
+
+-- PL/SQL block with cursor implementation
+DECLARE
+    CURSOR emp_cursor IS
+        SELECT employee_name, salary
+        FROM employees
+        WHERE salary > 60000;
+
+    emp_name employees.employee_name%TYPE;
+    emp_salary employees.salary%TYPE;
+BEGIN
+    OPEN emp_cursor; -- Open the cursor
+
+    LOOP
+        FETCH emp_cursor INTO emp_name, emp_salary; -- Fetch data into variables
+        EXIT WHEN emp_cursor%NOTFOUND; -- Exit the loop when no more rows to fetch
+
+        -- Process the fetched data (you can perform any operations here)
+        DBMS_OUTPUT.PUT_LINE('Employee: ' || emp_name || ', Salary: ' || emp_salary);
+    END LOOP;
+
+    CLOSE emp_cursor; -- Close the cursor
+END;
+/
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+.2. Implementation of different types of Joins 
+ Inner Join
+ Outer Join
+ Natural Join etc. [20 Marks]
+ Customer(customer_id,first_name)
+ Order(order_id,amount)
+ Cust_order(customerid , first_amount,amount)
+
+
+-- Create tables
+CREATE TABLE Customer (
+    customer_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(50)
+);
+
+CREATE TABLE Order (
+    order_id NUMBER PRIMARY KEY,
+    amount NUMBER
+);
+
+CREATE TABLE Cust_order (
+    customerid NUMBER,
+    order_id NUMBER,
+    amount NUMBER
+);
+
+-- Insert sample data
+INSERT INTO Customer VALUES (1, 'John');
+INSERT INTO Customer VALUES (2, 'Jane');
+INSERT INTO Customer VALUES (3, 'Michael');
+
+INSERT INTO Order VALUES (101, 500);
+INSERT INTO Order VALUES (102, 750);
+INSERT INTO Order VALUES (103, 1000);
+
+INSERT INTO Cust_order VALUES (1, 101, 500);
+INSERT INTO Cust_order VALUES (2, 102, 750);
+INSERT INTO Cust_order VALUES (3, 103, 1000);
+
+
+SELECT Customer.customer_id, Customer.first_name, Order.order_id, Order.amount
+FROM Customer
+INNER JOIN Cust_order ON Customer.customer_id = Cust_order.customerid
+INNER JOIN Order ON Cust_order.order_id = Order.order_id;
+
+
+CUSTOMER_ID  FIRST_NAME  ORDER_ID  AMOUNT
+1            John        101       500
+2            Jane        102       750
+3            Michael     103       1000
+
+
+SELECT Customer.customer_id, Customer.first_name, Order.order_id, Order.amount
+FROM Customer
+LEFT OUTER JOIN Cust_order ON Customer.customer_id = Cust_order.customerid
+LEFT OUTER JOIN Order ON Cust_order.order_id = Order.order_id;
+
+
+SELECT Customer.customer_id, Customer.first_name, Order.order_id, Order.amount
+FROM Customer
+RIGHT OUTER JOIN Cust_order ON Customer.customer_id = Cust_order.customerid
+RIGHT OUTER JOIN Order ON Cust_order.order_id = Order.order_id;
+
+
+SELECT Customer.customer_id, Customer.first_name, Order.order_id, Order.amount
+FROM Customer
+FULL OUTER JOIN Cust_order ON Customer.customer_id = Cust_order.customerid
+FULL OUTER JOIN Order ON Cust_order.order_id = Order.order_id;
+
+
+SELECT customer_id, first_name, order_id, amount
+FROM Customer
+NATURAL JOIN Cust_order
+NATURAL JOIN Order;
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. 1. Write a program for implementation of SQL Cursors
+
+
+-- Create tables
+CREATE TABLE Customer (
+    customer_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(50)
+);
+
+CREATE TABLE Order (
+    order_id NUMBER PRIMARY KEY,
+    amount NUMBER
+);
+
+CREATE TABLE Cust_order (
+    customerid NUMBER,
+    order_id NUMBER,
+    amount NUMBER
+);
+
+-- Insert sample data
+INSERT INTO Customer VALUES (1, 'John');
+INSERT INTO Customer VALUES (2, 'Jane');
+INSERT INTO Customer VALUES (3, 'Michael');
+
+INSERT INTO Order VALUES (101, 500);
+INSERT INTO Order VALUES (102, 750);
+INSERT INTO Order VALUES (103, 1000);
+
+INSERT INTO Cust_order VALUES (1, 101, 500);
+INSERT INTO Cust_order VALUES (2, 102, 750);
+INSERT INTO Cust_order VALUES (3, 103, 1000);
+
+
+-- PL/SQL program with cursor implementation
+DECLARE
+    CURSOR cust_order_cursor IS
+        SELECT co.customerid, c.first_name, co.order_id, co.amount
+        FROM Cust_order co
+        INNER JOIN Customer c ON co.customerid = c.customer_id
+        INNER JOIN Order o ON co.order_id = o.order_id;
+
+    cust_id NUMBER;
+    cust_name VARCHAR2(50);
+    order_id NUMBER;
+    order_amount NUMBER;
+BEGIN
+    OPEN cust_order_cursor; -- Open the cursor
+
+    LOOP
+        FETCH cust_order_cursor INTO cust_id, cust_name, order_id, order_amount; -- Fetch data into variables
+        EXIT WHEN cust_order_cursor%NOTFOUND; -- Exit the loop when no more rows to fetch
+
+        -- Process the fetched data (you can perform any operations here)
+        DBMS_OUTPUT.PUT_LINE('Customer ID: ' || cust_id || ', Name: ' || cust_name || ', Order ID: ' || order_id || ', Amount: ' || order_amount);
+    END LOOP;
+
+    CLOSE cust_order_cursor; -- Close the cursor
+END;
+/
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+. 2. Implementation of different types of operators in SQL 
+ Arithmetic Operators
+ Logical Operators
+ Comparison Operator
+ Special Operator
+ Set Operation
+
+
+-- Sample table with some numeric data
+CREATE TABLE Numbers (
+    num1 NUMBER,
+    num2 NUMBER
+);
+
+-- Inserting data into the table
+INSERT INTO Numbers VALUES (10, 5);
+INSERT INTO Numbers VALUES (8, 2);
+
+-- Using arithmetic operators in SQL queries
+SELECT num1 + num2 AS Addition, num1 - num2 AS Subtraction, num1 * num2 AS Multiplication,
+       num1 / num2 AS Division, num1 % num2 AS Modulus
+FROM Numbers;
+
+
+
+-- Sample table with some data
+CREATE TABLE Employees (
+    emp_id NUMBER,
+    emp_name VARCHAR2(50),
+    emp_age NUMBER,
+    emp_salary NUMBER
+);
+
+-- Inserting data into the table
+INSERT INTO Employees VALUES (1, 'John', 30, 50000);
+INSERT INTO Employees VALUES (2, 'Jane', 25, 60000);
+INSERT INTO Employees VALUES (3, 'Michael', 35, 75000);
+
+-- Using logical operators in SQL queries
+SELECT emp_name, emp_age, emp_salary
+FROM Employees
+WHERE emp_age > 25 AND emp_salary >= 60000;
+
+
+
+-- Using comparison operators in SQL queries
+SELECT emp_name, emp_age
+FROM Employees
+WHERE emp_age > 30;
+
+
+-- Using the special "IS NULL" operator in SQL queries
+SELECT emp_name
+FROM Employees
+WHERE emp_salary IS NULL;
+
+
+-- Sample tables with data for set operations
+CREATE TABLE SetTable1 (
+    id NUMBER,
+    name VARCHAR2(50)
+);
+
+CREATE TABLE SetTable2 (
+    id NUMBER,
+    name VARCHAR2(50)
+);
+
+-- Inserting data into the tables
+INSERT INTO SetTable1 VALUES (1, 'John');
+INSERT INTO SetTable1 VALUES (2, 'Jane');
+
+INSERT INTO SetTable2 VALUES (2, 'Jane');
+INSERT INTO SetTable2 VALUES (3, 'Michael');
+
+-- Using set operations in SQL queries
+SELECT id, name FROM SetTable1
+UNION
+SELECT id, name FROM SetTable2;
+
+SELECT id, name FROM SetTable1
+INTERSECT
+SELECT id, name FROM SetTable2;
+
+SELECT id, name FROM SetTable1
+MINUS
+SELECT id, name FROM SetTable2;
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Study & Implementation of PL/SQL
+
+
+-- Sample table "employees"
+CREATE TABLE employees (
+    employee_id NUMBER PRIMARY KEY,
+    basic_salary NUMBER,
+    bonus NUMBER
+);
+
+-- Insert some sample data into the table
+INSERT INTO employees VALUES (1, 50000, 10000);
+INSERT INTO employees VALUES (2, 60000, 8000);
+INSERT INTO employees VALUES (3, 70000, 12000);
+
+-- Commit the changes
+COMMIT;
+
+
+-- PL/SQL Stored Procedure
+CREATE OR REPLACE PROCEDURE CalculateTotalSalary(
+    emp_id NUMBER,
+    total_salary OUT NUMBER
+) AS
+    basic_sal NUMBER;
+    bonus_amt NUMBER;
+BEGIN
+    -- Fetch the basic salary and bonus for the given employee ID
+    SELECT basic_salary, bonus INTO basic_sal, bonus_amt
+    FROM employees
+    WHERE employee_id = emp_id;
+
+    -- Calculate the total salary
+    total_salary := basic_sal + bonus_amt;
+END;
+/
+
+
+-- Call the PL/SQL stored procedure
+DECLARE
+    emp_id_to_calculate NUMBER := 1;
+    total_sal NUMBER;
+BEGIN
+    CalculateTotalSalary(emp_id_to_calculate, total_sal);
+    DBMS_OUTPUT.PUT_LINE('Employee ID ' || emp_id_to_calculate || ' Total Salary: ' || total_sal);
+END;
+/
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+2. Implementation of different types of Joins 
+ Inner Join
+ Outer Join
+ Natural Join
+ Customer(customer_id,first_name)
+ Order(order_id,amount)
+ Cust_order(customerid , first_amount,amount)
+
+
+-- Create tables
+CREATE TABLE Customer (
+    customer_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(50)
+);
+
+CREATE TABLE Order (
+    order_id NUMBER PRIMARY KEY,
+    amount NUMBER
+);
+
+CREATE TABLE Cust_order (
+    customerid NUMBER,
+    order_id NUMBER,
+    first_amount NUMBER,
+    amount NUMBER
+);
+
+-- Insert sample data
+INSERT INTO Customer VALUES (1, 'John');
+INSERT INTO Customer VALUES (2, 'Jane');
+INSERT INTO Customer VALUES (3, 'Michael');
+
+INSERT INTO Order VALUES (101, 500);
+INSERT INTO Order VALUES (102, 750);
+INSERT INTO Order VALUES (103, 1000);
+
+INSERT INTO Cust_order VALUES (1, 101, 450, 500);
+INSERT INTO Cust_order VALUES (2, 102, 700, 750);
+INSERT INTO Cust_order VALUES (3, 103, 950, 1000);
+
+
+SELECT c.customer_id, c.first_name, o.order_id, o.amount
+FROM Customer c
+INNER JOIN Cust_order co ON c.customer_id = co.customerid
+INNER JOIN Order o ON co.order_id = o.order_id;
+
+
+SELECT c.customer_id, c.first_name, o.order_id, co.amount AS first_amount, o.amount AS order_amount
+FROM Customer c
+LEFT OUTER JOIN Cust_order co ON c.customer_id = co.customerid
+LEFT OUTER JOIN Order o ON co.order_id = o.order_id;
+
+
+SELECT c.customer_id, c.first_name, o.order_id, o.amount
+FROM Customer c
+NATURAL JOIN Cust_order co
+NATURAL JOIN Order o;
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Study & Implementation of SQL Cursors
+
+-- Create a sample table "employees"
+CREATE TABLE employees (
+    employee_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(50),
+    last_name VARCHAR2(50),
+    salary NUMBER
+);
+
+-- Insert some sample data into the table
+INSERT INTO employees VALUES (1, 'John', 'Doe', 50000);
+INSERT INTO employees VALUES (2, 'Jane', 'Smith', 60000);
+INSERT INTO employees VALUES (3, 'Michael', 'Johnson', 75000);
+INSERT INTO employees VALUES (4, 'Emily', 'Brown', 45000);
+
+-- Commit the changes
+COMMIT;
+
+
+-- PL/SQL block with cursor implementation
+DECLARE
+    -- Declare the cursor
+    CURSOR emp_cursor IS
+        SELECT employee_id, first_name, last_name, salary
+        FROM employees;
+
+    -- Declare variables to hold the data fetched by the cursor
+    emp_id employees.employee_id%TYPE;
+    emp_first_name employees.first_name%TYPE;
+    emp_last_name employees.last_name%TYPE;
+    emp_salary employees.salary%TYPE;
+BEGIN
+    -- Open the cursor
+    OPEN emp_cursor;
+
+    -- Fetch data into variables one row at a time
+    LOOP
+        FETCH emp_cursor INTO emp_id, emp_first_name, emp_last_name, emp_salary;
+
+        -- Exit the loop when no more rows to fetch
+        EXIT WHEN emp_cursor%NOTFOUND;
+
+        -- Process the fetched data (you can perform any operations here)
+        DBMS_OUTPUT.PUT_LINE('Employee ID: ' || emp_id || ', Name: ' || emp_first_name || ' ' || emp_last_name || ', Salary: ' || emp_salary);
+    END LOOP;
+
+    -- Close the cursor
+    CLOSE emp_cursor;
+END;
+/
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+2. Implementation of different types of Joins 
+ Inner Join
+ Outer Join
+ Natural Join etc. [20 Marks]
+ Customer(customer_id,first_name)
+
+
+-- Create the "Customer" table
+CREATE TABLE Customer (
+    customer_id NUMBER PRIMARY KEY,
+    first_name VARCHAR2(50)
+);
+
+-- Insert sample data into the table
+INSERT INTO Customer VALUES (1, 'John');
+INSERT INTO Customer VALUES (2, 'Jane');
+INSERT INTO Customer VALUES (3, 'Michael');
+
+
+-- Create the "Order" table
+CREATE TABLE Order (
+    order_id NUMBER PRIMARY KEY,
+    amount NUMBER
+);
+
+-- Insert sample data into the table
+INSERT INTO Order VALUES (101, 500);
+INSERT INTO Order VALUES (102, 750);
+INSERT INTO Order VALUES (103, 1000);
+
+-- Create the "Cust_order" table
+CREATE TABLE Cust_order (
+    customerid NUMBER,
+    order_id NUMBER,
+    first_amount NUMBER,
+    amount NUMBER
+);
+
+-- Insert sample data into the table
+INSERT INTO Cust_order VALUES (1, 101, 450, 500);
+INSERT INTO Cust_order VALUES (2, 102, 700, 750);
+INSERT INTO Cust_order VALUES (3, 103, 950, 1000);
+
+
+SELECT c.customer_id, c.first_name, co.order_id, co.amount
+FROM Customer c
+INNER JOIN Cust_order co ON c.customer_id = co.customerid;
+
+
+SELECT c.customer_id, c.first_name, co.order_id, co.amount
+FROM Customer c
+LEFT OUTER JOIN Cust_order co ON c.customer_id = co.customerid;
+
+
+SELECT c.customer_id, c.first_name, co.order_id, co.amount
+FROM Customer c
+NATURAL JOIN Cust_order co;
+
+
+
